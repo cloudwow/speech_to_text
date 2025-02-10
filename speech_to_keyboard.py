@@ -18,13 +18,24 @@ class SpeechToKeyboard:
         self.sample_rate = 16000
 
         # Setup keyboard listener for hotkey
-        self.key_combination = {keyboard.Key.ctrl_l, keyboard.Key.shift}
+        self.key_combination = {keyboard.Key.ctrl_l, keyboard.Key.ctrl_r}
         self.current_keys = set()
         self.listener = keyboard.Listener(on_press=self.on_press, on_release=self.on_release)
+
+        # def for_canonical(f):
+        #     return lambda k: f(l.canonical(k))
+
+        # hotkey = keyboard.HotKey(keyboard.HotKey.parse("<ctrl>+<alt>+h"), self.start_recording)
+        # with keyboard.Listener(on_press=for_canonical(hotkey.press), on_release=for_canonical(hotkey.release)) as ll:
+        #     ll.join()
 
     def on_press(self, key):
         if key in self.key_combination:
             self.current_keys.add(key)
+            if key in self.key_combination:
+                print("good key pressed" + str(key))
+            else:
+                print("some other key pressed" + str(key))
             if all(k in self.current_keys for k in self.key_combination):
                 self.start_recording()
 
